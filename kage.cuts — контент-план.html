@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>kage.cuts — контент-план</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Russo+One&display=swap">
+<style>
+:root{
+  --bg:#f1eff5;--panel:#ffffff;--card:#faf9fc;--ink:#17131f;--mute:#6b6577;--line:#ddd8e6;
+  --red:#b50d2a;--idea:#4a63b0;--cut:#a8741a;--ready:#b50d2a;--posted:#2f7d4f;
+  --head:'Russo One','Arial Black',sans-serif;--body:'Golos Text','Segoe UI',Arial,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c0a10;--panel:#14111a;--card:#1c1725;--ink:#ece8f2;--mute:#9a93a8;--line:#2c2538;
+  --red:#e0243f;--idea:#8fa3d8;--cut:#d9a441;--ready:#e0243f;--posted:#58b27c}}
+:root[data-theme="dark"]{
+  --bg:#0c0a10;--panel:#14111a;--card:#1c1725;--ink:#ece8f2;--mute:#9a93a8;--line:#2c2538;
+  --red:#e0243f;--idea:#8fa3d8;--cut:#d9a441;--ready:#e0243f;--posted:#58b27c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+.wrap{max-width:1360px;margin:0 auto;padding:18px 18px 70px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+h1{font:400 28px/1 var(--head);margin:0;letter-spacing:.5px}
+h1 span{color:var(--red)}
+.stats{color:var(--mute);font-size:14px;flex:1;min-width:140px}
+input,select,textarea,button{font:inherit;color:inherit}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+textarea{resize:vertical;min-height:70px}
+:is(input,select,textarea,button):focus-visible{outline:2px solid var(--idea);outline-offset:1px}
+button{cursor:pointer;border:1px solid var(--line);background:transparent;border-radius:8px;padding:8px 14px}
+button:hover{border-color:var(--mute)}
+button.main{background:var(--red);border-color:var(--red);color:#fff;font-weight:600;padding:9px 18px}
+button.main:hover{filter:brightness(1.1)}
+#q{max-width:230px}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}
+@media(max-width:1000px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.board{grid-template-columns:1fr}}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;min-height:160px;transition:border-color .15s,background .15s}
+.col.over{border-color:var(--ink);background:var(--card)}
+.col h2{display:flex;align-items:center;gap:8px;font:400 15px/1 var(--head);margin:2px 2px 12px}
+.dot{width:10px;height:10px;border-radius:50%}
+.count{margin-left:auto;color:var(--mute);font:500 13px var(--body)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:9px;cursor:grab}
+.card:active{cursor:grabbing}
+.card.drag{opacity:.4}
+.name{font-weight:600;line-height:1.3}
+.meta{color:var(--mute);font-size:13px;margin-top:2px}
+.hook{margin:8px 0 0;font-size:14px}
+.note{margin:4px 0 0;color:var(--mute);font-size:13px;white-space:pre-wrap}
+.date{display:inline-block;margin-top:8px;font-size:12px;padding:2px 9px;border-radius:12px;border:1px solid var(--line);color:var(--mute)}
+.date.today{border-color:var(--cut);color:var(--cut)}
+.date.late{border-color:var(--red);color:var(--red)}
+.acts{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+.acts button{padding:3px 9px;font-size:13px;border-color:transparent;background:var(--panel)}
+.acts button:hover{border-color:var(--line)}
+.acts .sp{flex:1}
+.empty{color:var(--mute);font-size:13px;text-align:center;padding:18px 6px;border:1px dashed var(--line);border-radius:10px}
+footer{margin-top:26px;color:var(--mute);font-size:13px}
+footer button{font-size:13px;padding:5px 11px}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:0;width:min(520px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto}
+dialog::backdrop{background:rgba(5,3,10,.62)}
+.dlg{padding:20px}
+.dlg h2{font:400 20px/1.2 var(--head);margin:0 0 4px}
+label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quick{display:flex;gap:6px;margin-top:6px}
+.quick button{padding:3px 10px;font-size:12px}
+.btns{display:flex;gap:8px;margin-top:18px;justify-content:flex-end}
+#backup{min-height:130px;font:12px/1.4 ui-monospace,Consolas,monospace}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:20px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast,.col{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>kage<span>.</span>cuts</h1>
+    <div class="stats" id="stats">контент-план</div>
+    <input id="q" type="search" placeholder="Поиск по аниме" aria-label="Поиск по аниме">
+    <button class="main" id="add">Новое видео</button>
+  </header>
+  <main class="board" id="board"></main>
+  <footer>
+    Данные хранятся в этом браузере. <button id="bk">Резервная копия</button>
+    Клавиша N — новое видео, перетаскивай карточки между колонками.
+  </footer>
+</div>
+
+<dialog id="dlg" aria-labelledby="dh">
+  <div class="dlg">
+    <h2 id="dh">Новое видео</h2>
+    <label for="anime">Аниме</label>
+    <input id="anime" list="titles" autocomplete="off">
+    <datalist id="titles">
+      <option value="Необыкновенный неудачник">
+      <option value="Приговорённый быть героем">
+      <option value="Isekai Munchkin">
+    </datalist>
+    <div class="row">
+      <div><label for="ep">Серия</label><input id="ep"></div>
+      <div><label for="time">Таймкод</label><input id="time"></div>
+    </div>
+    <div class="row">
+      <div><label for="date">Дата публикации</label><input id="date" type="date">
+        <div class="quick"><button type="button" data-d="0">Сегодня</button><button type="button" data-d="1">Завтра</button></div></div>
+      <div><label for="status">Статус</label>
+        <select id="status"><option value="idea">Идея</option><option value="cut">Нарезаю</option><option value="ready">Готово</option><option value="posted">Выложено</option></select></div>
+    </div>
+    <label for="hook">Текст на экране</label>
+    <input id="hook">
+    <label for="notes">Заметки</label>
+    <textarea id="notes"></textarea>
+    <div class="btns">
+      <button type="button" id="cancel">Отмена</button>
+      <button type="button" class="main" id="save">Сохранить</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="bdlg" aria-labelledby="bh">
+  <div class="dlg">
+    <h2 id="bh">Резервная копия</h2>
+    <p class="meta">Скопируй текст и сохрани в заметках. Чтобы восстановить план, вставь текст сюда и нажми «Загрузить».</p>
+    <textarea id="backup" aria-label="Резервная копия"></textarea>
+    <div class="btns">
+      <button type="button" id="bclose">Закрыть</button>
+      <button type="button" id="imp">Загрузить</button>
+      <button type="button" class="main" id="exp">Показать копию</button>
+    </div>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var KEY='kagecuts-plan-v1', items=[], editId=null;
+  var ST=[['idea','Идея','var(--idea)'],['cut','Нарезаю','var(--cut)'],['ready','Готово','var(--ready)'],['posted','Выложено','var(--posted)']];
+  var $=function(id){return document.getElementById(id)};
+  try{items=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(items))items=[]}catch(e){items=[]}
+  function persist(){try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){toast('Не удалось сохранить в браузере. Сделай резервную копию.')}}
+  function toast(t){var el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){el.classList.remove('on')},2200)}
+  function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
+  function btn(text,fn,label){var b=el('button',null,text);b.type='button';if(label)b.setAttribute('aria-label',label);b.addEventListener('click',fn);return b}
+  function iso(d){var m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(x<10?'0':'')+x}
+  function caption(it){return 'Аниме: '+it.anime+(it.ep?' | серия '+it.ep:'')+' #kagecuts #аниме #анимеэдит #исекай'}
+  function copy(text){
+    function done(){toast('Подпись скопирована')}
+    function fb(){var t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){toast('Не получилось скопировать')}document.body.removeChild(t)}
+    try{navigator.clipboard.writeText(text).then(done,fb)}catch(e){fb()}
+  }
+  function dateInfo(it){
+    if(!it.date)return null;
+    var today=iso(new Date()),tm=new Date();tm.setDate(tm.getDate()+1);
+    var p=it.date.split('-'),txt=p.length===3?p[2]+'.'+p[1]:it.date,cls='date';
+    if(it.date===today){txt='Сегодня';cls+=' today'}
+    else if(it.date===iso(tm))txt='Завтра';
+    else if(it.date<today&&it.status!=='posted'){cls+=' late';txt+=' · просрочено'}
+    return {txt:txt,cls:cls};
+  }
+  function move(it,dir){
+    var i=ST.map(function(s){return s[0]}).indexOf(it.status)+dir;
+    if(i<0||i>=ST.length)return;
+    it.status=ST[i][0];persist();render();
+  }
+
+  function card(it){
+    var c=el('article','card');c.draggable=true;
+    c.addEventListener('dragstart',function(e){e.dataTransfer.setData('text/plain',it.id);e.dataTransfer.effectAllowed='move';c.classList.add('drag')});
+    c.addEventListener('dragend',function(){c.classList.remove('drag')});
+    c.appendChild(el('div','name',it.anime));
+    var m=[];if(it.ep)m.push('серия '+it.ep);if(it.time)m.push(it.time);
+    if(m.length)c.appendChild(el('div','meta',m.join(' · ')));
+    if(it.hook)c.appendChild(el('p','hook','«'+it.hook+'»'));
+    if(it.notes)c.appendChild(el('p','note',it.notes));
+    var d=dateInfo(it);if(d)c.appendChild(el('span',d.cls,d.txt));
+    var a=el('div','acts');
+    a.appendChild(btn('‹',function(){move(it,-1)},'Назад по статусу'));
+    a.appendChild(btn('›',function(){move(it,1)},'Дальше по статусу'));
+    a.appendChild(btn('Подпись',function(){copy(caption(it))},'Скопировать подпись'));
+    a.appendChild(el('span','sp'));
+    a.appendChild(btn('Изменить',function(){openForm(it)}));
+    a.appendChild(btn('✕',function(){if(confirm('Удалить «'+it.anime+'»?')){items=items.filter(function(x){return x.id!==it.id});persist();render()}},'Удалить'));
+    c.appendChild(a);
+    return c;
+  }
+
+  function render(){
+    var q=$('q').value.trim().toLowerCase(),board=$('board');board.textContent='';
+    var total=0;
+    ST.forEach(function(s){
+      var list=items.filter(function(i){return i.status===s[0]&&(!q||(i.anime||'').toLowerCase().indexOf(q)>-1)})
+        .sort(function(a,b){return (a.date||'9999').localeCompare(b.date||'9999')});
+      total+=items.filter(function(i){return i.status===s[0]}).length;
+      var col=el('section','col');
+      var h=el('h2');var dot=el('span','dot');dot.style.background=s[2];h.appendChild(dot);h.appendChild(document.createTextNode(s[1]));h.appendChild(el('span','count',String(list.length)));
+      col.appendChild(h);
+      if(list.length)list.forEach(function(it){col.appendChild(card(it))});
+      else col.appendChild(el('div','empty',q?'Ничего не найдено':'Пусто'));
+      col.addEventListener('dragover',function(e){e.preventDefault();col.classList.add('over')});
+      col.addEventListener('dragleave',function(){col.classList.remove('over')});
+      col.addEventListener('drop',function(e){
+        e.preventDefault();col.classList.remove('over');
+        var id=e.dataTransfer.getData('text/plain'),it=items.filter(function(x){return x.id===id})[0];
+        if(it&&it.status!==s[0]){it.status=s[0];persist();render()}
+      });
+      board.appendChild(col);
+    });
+    var ready=items.filter(function(i){return i.status==='ready'}).length,posted=items.filter(function(i){return i.status==='posted'}).length;
+    $('stats').textContent=total?('Всего '+total+' · готово к выкладке '+ready+' · выложено '+posted):'';
+  }
+
+  var F=['anime','ep','time','date','status','hook','notes'];
+  function openForm(it){
+    editId=it?it.id:null;
+    F.forEach(function(f){$(f).value=it?(it[f]||''):''});
+    if(!it)$('status').value='idea';
+    $('dh').textContent=it?'Редактирование':'Новое видео';
+    $('save').textContent=it?'Обновить':'Сохранить';
+    $('dlg').showModal();$('anime').focus();
+  }
+  function save(){
+    var anime=$('anime').value.trim();
+    if(!anime){toast('Впиши название аниме');$('anime').focus();return}
+    var data={lang:'ru'};F.forEach(function(f){data[f]=$(f).value.trim()});
+    if(editId){items=items.map(function(x){return x.id===editId?Object.assign({},x,data):x});toast('Обновлено')}
+    else{data.id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);items.push(data);toast('Сохранено')}
+    persist();$('dlg').close();render();
+  }
+  $('add').addEventListener('click',function(){openForm(null)});
+  $('save').addEventListener('click',save);
+  $('cancel').addEventListener('click',function(){$('dlg').close()});
+  $('dlg').addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter')save()});
+  document.querySelectorAll('.quick button').forEach(function(b){
+    b.addEventListener('click',function(){var d=new Date();d.setDate(d.getDate()+Number(b.dataset.d));$('date').value=iso(d)});
+  });
+  document.addEventListener('keydown',function(e){
+    var t=e.target.tagName;
+    if(e.key.toLowerCase()==='n'&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&t!=='INPUT'&&t!=='TEXTAREA'&&t!=='SELECT'&&!document.querySelector('dialog[open]')){e.preventDefault();openForm(null)}
+  });
+  $('q').addEventListener('input',render);
+  $('bk').addEventListener('click',function(){$('backup').value='';$('bdlg').showModal()});
+  $('bclose').addEventListener('click',function(){$('bdlg').close()});
+  $('exp').addEventListener('click',function(){$('backup').value=JSON.stringify(items);$('backup').select();toast('Скопируй этот текст')});
+  $('imp').addEventListener('click',function(){
+    try{var d=JSON.parse($('backup').value);if(!Array.isArray(d))throw 0;
+      items=d.filter(function(x){return x&&x.anime}).map(function(x){if(!x.id)x.id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);return x});
+      persist();render();$('bdlg').close();toast('Загружено: '+items.length)}
+    catch(e){toast('Это не похоже на копию плана')}
+  });
+  render();
+})();
+</script>
+</body>
+</html>
